@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');  
-const app = express();
 const mongoose = require('mongoose');
 const path = require('path');  
 
@@ -16,10 +15,10 @@ mongoose.connect('mongodb+srv://elias:ocdev2021@cluster0.zycwu.mongodb.net/sauce
   app.use((req, res) => {
     res.json({ message: 'Votre requête a bien été reçue !' }); 
  });
- 
+
   app.use(bodyParser.json()) 
 
-  app.use('/api/sauces', routesSauce);   
+  app.use('/api/sauce', routesSauce);   
   app.use('/api/auth', routesUsers); 
 
   app.use('/api/auth', userRoutes);
