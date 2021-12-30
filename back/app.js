@@ -1,26 +1,44 @@
-const express = require('express');
+const express = require('express');    
 const bodyParser = require('body-parser');  
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'); 
 const path = require('path');  
 
-const userRoutes = require('./routes/user');
-const routesSauce = require('./routes/sauce'); 
 
-mongoose.connect('mongodb+srv://elias:ocdev2021@cluster0.zycwu.mongodb.net/sauce?retryWrites=true&w=majority',
+const helmet = require("helmet"); 
+const dotenv = require ('dotenv');
+const resul = dotenv.config();
+ 
+
+const routesSauce = require('./routes/sauce');   
+const routesUsers = require('./routes/users');   
+
+const app = express(); 
+mongoose.connect(`mongodb+srv://elias:ocdev2021@cluster0.zycwu.mongodb.net/sauce?retryWrites=true&w=majority`,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
-  app.use((req, res) => {
-    res.json({ message: 'Votre requête a bien été reçue !' }); 
- });
+app.use((req, res, next) => {    
+    res.setHeader('Access-Control-Allow-Origin', '*');   
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');  
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');  
+    next();
+  });
 
-  app.use(bodyParser.json()) 
 
-  app.use('/api/sauce', routesSauce);   
-  app.use('/api/auth', routesUsers); 
 
-  app.use('/api/auth', userRoutes);
 
-module.exports = app;
+app.use(helmet());  
+
+
+app.use(bodyParser.json()) 
+
+
+app.use('/images', express.static(path.join(__dirname, 'images')));  
+
+
+app.use('/api/sauces', routesSauce);   
+app.use('/api/auth', routesUsers); 
+
+module.exports = app 
