@@ -26,7 +26,7 @@ exports.signup = (req, res, next) => {
       return false
   }  
 
-  const emailHash = hash.sha256().update(req.body.email).digest('hex');   // If email is validated, it is updated and digested to be hex encoded.
+  const emailHash = hash.sha256().update(req.body.email).digest('hex');   
 
   if (!shemaPassValid.validate(req.body.password)) {
       res.status(401).json({message:"L'email exist déjà et/ou le mot de passe doit contenir min 1 majuscule, 1 minuscule, 1 chiffre et min de 8 caractères!"});
