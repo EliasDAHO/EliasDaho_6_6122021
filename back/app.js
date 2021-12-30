@@ -10,14 +10,16 @@ const resul = dotenv.config();
  
 
 const routesSauce = require('./routes/sauce');   
-const routesUsers = require('./routes/users');   
+const routesUsers = require('./routes/user');   
 
-const app = express(); 
+
 mongoose.connect(`mongodb+srv://elias:ocdev2021@cluster0.zycwu.mongodb.net/sauce?retryWrites=true&w=majority`,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
+
+const app = express();   
 
 app.use((req, res, next) => {    
     res.setHeader('Access-Control-Allow-Origin', '*');   
